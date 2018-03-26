@@ -1,5 +1,8 @@
 # htmlacademy-php-init
 
+## platform
+macOS
+
 ## dependencies
 
 docker-engine
