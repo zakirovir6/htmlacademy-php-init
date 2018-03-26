@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE_DIR=$(pwd)
-GIT_REMOTE_FORK="academy"
+GIT_REMOTE_FORK="fork"
 PROJECT_DOMAIN=".ha"
 DOCKER_STACK_PREFIX="ha-"
 
