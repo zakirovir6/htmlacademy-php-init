@@ -1,0 +1,13 @@
+server {
+	listen 80;
+	server_name ##NGINX_SERVER_NAME##;
+	root /usr/share/nginx/html;
+	index index.php;
+	location ~ \.php$ {
+		fastcgi_pass php:9000;
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		fastcgi_read_timeout 300s;
+		include fastcgi_params;
+	}
+}

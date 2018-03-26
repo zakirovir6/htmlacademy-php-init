@@ -1,0 +1,55 @@
+version: "3.1"
+services:
+
+  php:
+    image: 127.0.0.1:##REGISTRY_PORT##/##PHP_IMAGE_NAME##
+    build:
+      context: .
+      dockerfile: php.Dockerfile
+    ports:
+      - 9000
+    networks:
+      - ##NETWORK_NAME##
+    volumes:
+      - "##APP_ROOT##:/usr/share/nginx/html"
+
+  mysql:
+    image: mysql:5.7
+    networks:
+      - ##NETWORK_NAME##
+    volumes:
+      - "##DB_ROOT##:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/ha_mysql_root_password
+      - MYSQL_DATABASE_FILE=/run/secrets/ha_mysql_database
+      - MYSQL_USER_FILE=/run/secrets/ha_mysql_user
+      - MYSQL_PASSWORD_FILE=/run/secrets/ha_mysql_password
+    secrets:
+      - ha_mysql_root_password
+      - ha_mysql_database
+      - ha_mysql_user
+      - ha_mysql_password
+
+  nginx:
+    image: nginx:alpine
+    ports: 
+      - ##NGINX_PORT##:80
+    volumes:
+      - "##NGINX_VHOST_CONF##:/etc/nginx/conf.d/default.conf"
+      - "##APP_ROOT##:/usr/share/nginx/html"
+      - "##NGINX_LOG_PATH##:/var/log/nginx"
+    networks:
+      - ##NETWORK_NAME##
+
+networks:
+  ##NETWORK_NAME##:
+
+secrets:
+  ha_mysql_root_password:
+    external: true
+  ha_mysql_database:
+    external: true
+  ha_mysql_user:
+    external: true
+  ha_mysql_password:
+    external: true
