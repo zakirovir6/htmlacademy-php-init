@@ -60,26 +60,30 @@ get_user_input_not_empty "Please, set a github fork link: " GITHUB_FORK_REPO
 mkdir -p "${PROJECT_DIR}"
 mkdir -p "${PROJECT_DIR}/logs"
 mkdir -p "${PROJECT_DIR}/db"
-mkdir -p "${PROJECT_DIR}/src"
+mkdir -p "${PROJECT_DIR}/${PROJECT_NAME}"
 
-git clone ${GITHUB_UPSTREAM_REPO} ${PROJECT_DIR}/src
-git -C ${PROJECT_DIR}/src remote add $GIT_REMOTE_FORK $GITHUB_FORK_REPO  
+git clone ${GITHUB_UPSTREAM_REPO} ${PROJECT_DIR}/${PROJECT_NAME}
+git -C ${PROJECT_DIR}/${PROJECT_NAME} remote add $GIT_REMOTE_FORK $GITHUB_FORK_REPO
 
 D_COMPOSE_FILE=${PROJECT_DIR}/docker-compose.yaml
 NGX_VHOST_FILE=${PROJECT_DIR}/nginx-vhost.conf
+PHP_INI_FILE=${PROJECT_DIR}/php.ini
 cp "${BASE_DIR}/init/docker-compose.yaml.template" ${D_COMPOSE_FILE}
 cp "${BASE_DIR}/init/php.Dockerfile" "${PROJECT_DIR}/php.Dockerfile"
 sed -i "" "s|##NGINX_PORT##|${PROJECT_PORT}|g" ${D_COMPOSE_FILE}
 sed -i "" "s|##NGINX_VHOST_CONF##|${NGX_VHOST_FILE}|g" ${D_COMPOSE_FILE}
-sed -i "" "s|##APP_ROOT##|${PROJECT_DIR}/src|g" ${D_COMPOSE_FILE}
+sed -i "" "s|##APP_ROOT##|${PROJECT_DIR}/${PROJECT_NAME}|g" ${D_COMPOSE_FILE}
 sed -i "" "s|##NGINX_LOG_PATH##|${PROJECT_DIR}/logs|g" ${D_COMPOSE_FILE}
 sed -i "" "s|##NETWORK_NAME##|network-ha-${PROJECT_NAME}|g" ${D_COMPOSE_FILE}
 sed -i "" "s|##DB_ROOT##|${PROJECT_DIR}/db|g" ${D_COMPOSE_FILE}
 sed -i "" "s|##REGISTRY_PORT##|${REGISTRY_PORT}|g" ${D_COMPOSE_FILE}
 sed -i "" "s|##PHP_IMAGE_NAME##|${PROJECT_NAME}-php|g" ${D_COMPOSE_FILE}
+sed -i "" "s|##PHP_INI_FILE##|${PHP_INI_FILE}|g" ${D_COMPOSE_FILE}
 
 cp "${BASE_DIR}/init/nginx-vhost.conf.template" ${NGX_VHOST_FILE}
 sed -i "" "s|##NGINX_SERVER_NAME##|${PROJECT_NAME}${PROJECT_DOMAIN}|g" ${NGX_VHOST_FILE}
+
+cp "${BASE_DIR}/init/php.ini" ${PHP_INI_FILE}
 
 cd ${PROJECT_DIR} &&
 	docker-compose build &&
