@@ -20,6 +20,7 @@ services:
       - ##NETWORK_NAME##
     volumes:
       - "##DB_ROOT##:/var/lib/mysql"
+      - "##APP_ROOT##:/usr/share/nginx/html"
     environment:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/ha_mysql_root_password
       - MYSQL_DATABASE_FILE=/run/secrets/ha_mysql_database
@@ -30,6 +31,7 @@ services:
       - ha_mysql_database
       - ha_mysql_user
       - ha_mysql_password
+    command: ['mysqld', '--character-set-server=utf8', '--collation-server=utf8_general_ci']
 
   nginx:
     image: nginx:alpine
