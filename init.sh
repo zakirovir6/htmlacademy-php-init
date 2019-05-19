@@ -70,18 +70,18 @@ NGX_VHOST_FILE=${PROJECT_DIR}/nginx-vhost.conf
 PHP_INI_FILE=${PROJECT_DIR}/php.ini
 cp "${BASE_DIR}/init/docker-compose.yaml.template" ${D_COMPOSE_FILE}
 cp "${BASE_DIR}/init/php.Dockerfile" "${PROJECT_DIR}/php.Dockerfile"
-sed -i "" "s|##NGINX_PORT##|${PROJECT_PORT}|g" ${D_COMPOSE_FILE}
-sed -i "" "s|##NGINX_VHOST_CONF##|${NGX_VHOST_FILE}|g" ${D_COMPOSE_FILE}
-sed -i "" "s|##APP_ROOT##|${PROJECT_DIR}/${PROJECT_NAME}|g" ${D_COMPOSE_FILE}
-sed -i "" "s|##NGINX_LOG_PATH##|${PROJECT_DIR}/logs|g" ${D_COMPOSE_FILE}
-sed -i "" "s|##NETWORK_NAME##|network-ha-${PROJECT_NAME}|g" ${D_COMPOSE_FILE}
-sed -i "" "s|##DB_ROOT##|${PROJECT_DIR}/db|g" ${D_COMPOSE_FILE}
-sed -i "" "s|##REGISTRY_PORT##|${REGISTRY_PORT}|g" ${D_COMPOSE_FILE}
-sed -i "" "s|##PHP_IMAGE_NAME##|${PROJECT_NAME}-php|g" ${D_COMPOSE_FILE}
-sed -i "" "s|##PHP_INI_FILE##|${PHP_INI_FILE}|g" ${D_COMPOSE_FILE}
+sed -i "s|##NGINX_PORT##|${PROJECT_PORT}|g" ${D_COMPOSE_FILE}
+sed -i "s|##NGINX_VHOST_CONF##|${NGX_VHOST_FILE}|g" ${D_COMPOSE_FILE}
+sed -i "s|##APP_ROOT##|${PROJECT_DIR}/${PROJECT_NAME}|g" ${D_COMPOSE_FILE}
+sed -i "s|##NGINX_LOG_PATH##|${PROJECT_DIR}/logs|g" ${D_COMPOSE_FILE}
+sed -i "s|##NETWORK_NAME##|network-ha-${PROJECT_NAME}|g" ${D_COMPOSE_FILE}
+sed -i "s|##DB_ROOT##|${PROJECT_DIR}/db|g" ${D_COMPOSE_FILE}
+sed -i "s|##REGISTRY_PORT##|${REGISTRY_PORT}|g" ${D_COMPOSE_FILE}
+sed -i "s|##PHP_IMAGE_NAME##|${PROJECT_NAME}-php|g" ${D_COMPOSE_FILE}
+sed -i "s|##PHP_INI_FILE##|${PHP_INI_FILE}|g" ${D_COMPOSE_FILE}
 
 cp "${BASE_DIR}/init/nginx-vhost.conf.template" ${NGX_VHOST_FILE}
-sed -i "" "s|##NGINX_SERVER_NAME##|${PROJECT_NAME}${PROJECT_DOMAIN}|g" ${NGX_VHOST_FILE}
+sed -i "s|##NGINX_SERVER_NAME##|${PROJECT_NAME}${PROJECT_DOMAIN}|g" ${NGX_VHOST_FILE}
 
 cp "${BASE_DIR}/init/php.ini" ${PHP_INI_FILE}
 
